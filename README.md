@@ -4,7 +4,7 @@
 
 El objetivo sería realizar una web en React que use el API de OpenFDA (https://open.fda.gov/apis/) para permitir la búsqueda de medicamentos (de los registrados en EEUU).
 
-## Requerimientos de la prueba
+## Requerimientos
 
 - Debe haber un campo de búsqueda para introducir el texto.
 - Se deben mostrar los resultados concordantes (conforme a la petición hecha al API) tras la introducción de texto en el mismo.
