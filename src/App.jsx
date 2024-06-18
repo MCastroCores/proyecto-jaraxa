@@ -15,9 +15,10 @@ import "@fontsource/roboto/700.css";
 function App() {
   const [query, setQuery] = useState("");
   const [data, setData] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const URL = `https://api.fda.gov/drug/drugsfda.json?search=${query}&count=openfda.generic_name.exact&limit=500`;
+  // const URLPRUEBA = `https://api.fda.gov/drug/drugsfda.json?search=openfda.generic_name.exact:${query}&limit=500`;
 
   useEffect(() => {
     const getResults = async () => {
@@ -41,14 +42,16 @@ function App() {
 
   return (
     <>
-      <Box>
-        <Typography
-          sx={{ color: "#987" }}
-          variant="h4"
-          component="h1"
-          padding={3}
-        >
-          Proyecto Jaraxa
+      <Box
+        component="main"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography sx={{ width: 250 }} variant="h4" component="h1" padding={3}>
+          Proyect Jaraxa
         </Typography>
         <Box
           component="form"
@@ -59,8 +62,8 @@ function App() {
           autoComplete="off"
         >
           <TextField
-            id="outlined-controlled"
-            label="Drug"
+            id="outlined"
+            label="Search a drug..."
             onChange={(e) => {
               setQuery(e.target.value.toUpperCase());
             }}
@@ -83,7 +86,9 @@ function App() {
                 </ListItemButton>
               ))
             ) : (
-              <p>No hay resultados</p>
+              <Box sx={{ color: "red", typography: "body1", padding: 5 }}>
+                No matches found
+              </Box>
             )}
           </List>
         </Box>
