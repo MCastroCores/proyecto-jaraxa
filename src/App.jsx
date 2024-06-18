@@ -41,49 +41,52 @@ function App() {
 
   return (
     <>
-      <Typography
-        sx={{ color: "#987" }}
-        variant="h4"
-        component="h1"
-        padding={3}
-      >
-        Proyecto Jaraxa
-      </Typography>
-      <Box
-        component="form"
-        sx={{
-          "& > :not(style)": { m: 1, width: "25ch" },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          id="outlined-controlled"
-          label="Drug"
-          onChange={(e) => {
-            setQuery(e.target.value.toUpperCase());
+      <Box>
+        <Typography
+          sx={{ color: "#987" }}
+          variant="h4"
+          component="h1"
+          padding={3}
+        >
+          Proyecto Jaraxa
+        </Typography>
+        <Box
+          component="form"
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
           }}
-        />
-      </Box>
-      <Box sx={{ width: "100%" }}>
-        <List>
-          {data?.results ? (
-            data.results.map((drug, index) => (
-              <ListItemButton
-                key={index}
-                selected={selectedIndex === index}
-                onClick={(event) => handleListItemClick(event, index)}
-              >
-                <ListItemIcon>
-                  <VaccinesIcon />
-                </ListItemIcon>
-                <ListItemText primary={drug.term} secondary={drug.count} />
-              </ListItemButton>
-            ))
-          ) : (
-            <p>No hay resultados</p>
-          )}
-        </List>
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-controlled"
+            label="Drug"
+            onChange={(e) => {
+              setQuery(e.target.value.toUpperCase());
+            }}
+          />
+        </Box>
+        <Box sx={{ width: "100%" }}>
+          <List>
+            {data?.results ? (
+              data.results.map((drug, index) => (
+                <ListItemButton
+                  sx={{ border: 1, gap: 1, marginY: 1 }}
+                  key={index}
+                  selected={selectedIndex === index}
+                  onClick={(event) => handleListItemClick(event, index)}
+                >
+                  <ListItemIcon>
+                    <VaccinesIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={drug.term} secondary={drug.count} />
+                </ListItemButton>
+              ))
+            ) : (
+              <p>No hay resultados</p>
+            )}
+          </List>
+        </Box>
       </Box>
     </>
   );
