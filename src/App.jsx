@@ -1,8 +1,21 @@
 import { useEffect, useState } from "react";
+import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton from "@mui/material/ListItemButton";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import VaccinesIcon from "@mui/icons-material/Vaccines";
+import { ListItemText } from "@mui/material";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 function App() {
   const [query, setQuery] = useState("");
   const [data, setData] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
   const URL = `https://api.fda.gov/drug/drugsfda.json?search=${query}&count=openfda.generic_name.exact&limit=500`;
 
@@ -22,24 +35,56 @@ function App() {
   console.log(query);
   console.log(data);
 
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
+
   return (
     <>
-      <h1>Proyecto Jaraxa</h1>
-      <input
-        type="text"
-        onChange={(e) => setQuery(e.target.value.toUpperCase())}
-      />
-      <ul>
-        {data?.results ? (
-          data.results.map((drug, index) => (
-            <li key={index}>
-              {drug.term} : {drug.count}
-            </li>
-          ))
-        ) : (
-          <p>No hay resultados</p>
-        )}
-      </ul>
+      <Typography
+        sx={{ color: "#987" }}
+        variant="h4"
+        component="h1"
+        padding={3}
+      >
+        Proyecto Jaraxa
+      </Typography>
+      <Box
+        component="form"
+        sx={{
+          "& > :not(style)": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="outlined-controlled"
+          label="Drug"
+          onChange={(e) => {
+            setQuery(e.target.value.toUpperCase());
+          }}
+        />
+      </Box>
+      <Box sx={{ width: "100%" }}>
+        <List>
+          {data?.results ? (
+            data.results.map((drug, index) => (
+              <ListItemButton
+                key={index}
+                selected={selectedIndex === index}
+                onClick={(event) => handleListItemClick(event, index)}
+              >
+                <ListItemIcon>
+                  <VaccinesIcon />
+                </ListItemIcon>
+                <ListItemText primary={drug.term} secondary={drug.count} />
+              </ListItemButton>
+            ))
+          ) : (
+            <p>No hay resultados</p>
+          )}
+        </List>
+      </Box>
     </>
   );
 }
