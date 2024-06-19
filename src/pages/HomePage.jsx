@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "../index.css";
+
+// RECURSOS DE MATERIAL UI NECESARIOS PARA LA PÁGINA
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -6,17 +13,13 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
+import CachedIcon from "@mui/icons-material/Cached";
 import { ListItemText } from "@mui/material";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-import { Link } from "react-router-dom";
 
 export const HomePage = () => {
+  // ESTADOS PARA GUARDAR LA PALABRA A BUSCAR Y LA INFORMACIÓN DE LA API
   const [query, setQuery] = useState("");
   const [data, setData] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const URL = `https://api.fda.gov/drug/drugsfda.json?search=${query}&count=openfda.generic_name.exact&limit=500`;
   // const URLPRUEBA = `https://api.fda.gov/drug/drugsfda.json?search=openfda.generic_name.exact:${query}&limit=500`;
@@ -31,15 +34,12 @@ export const HomePage = () => {
         console.log(error);
       }
     };
+
     getResults();
-  }, [query]);
+  }, [query, URL]);
 
   console.log(query);
   console.log(data);
-
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
 
   return (
     <>
@@ -70,31 +70,43 @@ export const HomePage = () => {
             }}
           />
         </Box>
-        <Box sx={{ width: "100%" }}>
-          <List>
-            {data?.results ? (
-              data.results.map((drug, index) => (
-                <ListItemButton
-                  sx={{ border: 1, gap: 1, marginY: 1 }}
-                  key={index}
-                  selected={selectedIndex === index}
-                  onClick={(event) => handleListItemClick(event, index)}
-                >
-                  <ListItemIcon>
-                    <VaccinesIcon />
-                  </ListItemIcon>
-                  <Link to={`${drug.term}`}>
-                    <ListItemText primary={drug.term} secondary={drug.count} />
+        {data ? (
+          <Box sx={{ width: "75%" }}>
+            <List>
+              {data?.results ? (
+                data.results.map((drug, index) => (
+                  <Link
+                    key={index}
+                    className="linkDefault"
+                    to={`${drug.term}`}
+                    color="inherit"
+                    underline="none"
+                  >
+                    <ListItemButton sx={{ border: 1, gap: 1, marginY: 1 }}>
+                      <ListItemIcon>
+                        <VaccinesIcon />
+                      </ListItemIcon>
+
+                      <ListItemText
+                        sx={{ textDecoration: "none" }}
+                        primary={drug.term}
+                        secondary={`${drug.count} products`}
+                      />
+                    </ListItemButton>
                   </Link>
-                </ListItemButton>
-              ))
-            ) : (
-              <Box sx={{ color: "red", typography: "body1", padding: 5 }}>
-                No matches found
-              </Box>
-            )}
-          </List>
-        </Box>
+                ))
+              ) : (
+                <Box sx={{ color: "red", typography: "body1", padding: 5 }}>
+                  No matches found
+                </Box>
+              )}
+            </List>
+          </Box>
+        ) : (
+          <Box sx={{ color: "black", padding: 10 }}>
+            <CachedIcon />
+          </Box>
+        )}
       </Box>
     </>
   );
