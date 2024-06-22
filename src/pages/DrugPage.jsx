@@ -1,4 +1,7 @@
 import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+// Recursos de material UI para la página
 import {
   Box,
   Card,
@@ -10,7 +13,7 @@ import {
   createTheme,
 } from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
-import { useEffect, useState } from "react";
+
 import { ThemeProvider } from "@emotion/react";
 
 const theme = createTheme({
@@ -30,10 +33,12 @@ export const DrugPage = () => {
   let { drugGenericName } = useParams();
   console.log(drugGenericName);
 
+  // Convertimos el nombre si es necesario cambiando el espacio por el + para la petición a la API
   if (drugGenericName.includes(" ")) {
     drugGenericName = drugGenericName.replace(/ /g, "+");
   }
   console.log(drugGenericName);
+
   // Estado para guardar la nueva data
   const [dataDrug, setDataDrug] = useState(null);
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../index.css";
 
-// RECURSOS DE MATERIAL UI NECESARIOS PARA LA PÁGINA
+// Recursos de material UI para la página
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
@@ -30,10 +30,11 @@ const theme = createTheme({
 });
 
 export const HomePage = () => {
-  // ESTADOS PARA GUARDAR LA PALABRA A BUSCAR Y ESTADO PARA GUARDAR LA INFORMACIÓN AGRUPADA DE LAS MEDICINAS DE LA API
+  // Estados para guardar la medicina a buscar y la información obtenida tras la búsqueda
   const [query, setQuery] = useState("");
   const [dataDrugCounter, setDataDrugCounter] = useState(null);
 
+  // String con la URL para la petición, cambiando en función de la query buscada
   const URL = `https://api.fda.gov/drug/drugsfda.json?search=${query}&count=openfda.generic_name.exact&limit=500`;
 
   useEffect(() => {
@@ -49,9 +50,6 @@ export const HomePage = () => {
 
     getResultsByGroup();
   }, [query, URL]);
-
-  console.log(query);
-  console.log(dataDrugCounter);
 
   return (
     <ThemeProvider theme={theme}>
@@ -81,7 +79,7 @@ export const HomePage = () => {
             sx={{ borderColor: "text.primary" }}
             id="outlined"
             label="Search a drug..."
-            borderColor="white"
+            autoFocus={true}
             onChange={(e) => {
               setQuery(e.target.value.toUpperCase());
             }}
